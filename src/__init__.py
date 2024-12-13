@@ -29,7 +29,7 @@ def init_app():
     """
     try:
         # Registrar el blueprint del modelo con el prefijo '/optimize'
-        app.register_blueprint(ModelRoutes.main, url_prefix='/optimize')
+        app.register_blueprint(ModelRoutes.main, url_prefix='/api/v1/optimize')
         return app  # Devuelve la aplicación configurada
     except Exception as e:
         # Registrar errores de inicialización y lanzar una excepción
