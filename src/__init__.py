@@ -7,7 +7,7 @@ incluyendo el registro de blueprints y la configuración de CORS.
 
 from flask import Flask  # Clase principal para crear aplicaciones Flask
 from flask_cors import CORS  # Habilitar CORS (Cross-Origin Resource Sharing)
-from src.routes import ModelRoutes  # Importa las rutas del modelo
+from src.routes import model_1_routes, model_2_routes, model_3_routes, model_4_routes # Importa las rutas del modelo
 
 
 # Instancia global de la aplicación Flask
@@ -28,8 +28,15 @@ def init_app():
         RuntimeError: Si ocurre un error al registrar los blueprints.
     """
     try:
-        # Registrar el blueprint del modelo con el prefijo '/optimize'
-        app.register_blueprint(ModelRoutes.main, url_prefix='/api/v1/optimize')
+        # Registrar el blueprint del modelo modulo 1 con el prefijo '/optimize'
+        app.register_blueprint(model_1_routes.main, url_prefix='/api/v1/modulo1')
+        # Registrar el blueprint del modelo modulo 2 con el prefijo '/solar'
+        app.register_blueprint(model_2_routes.solar, url_prefix='/api/v1/modulo2')
+        # Registrar el blueprint del modelo modulo 3 con el prefijo '/solar'
+        app.register_blueprint(model_3_routes.monte_carlo, url_prefix='/api/v1/modulo3')
+        # Registrar el blueprint del modelo modulo 4 con el prefijo '/solar'
+        app.register_blueprint(model_4_routes.main, url_prefix='/api/v1/modulo4')
+
         return app  # Devuelve la aplicación configurada
     except Exception as e:
         # Registrar errores de inicialización y lanzar una excepción

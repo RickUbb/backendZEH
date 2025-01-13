@@ -1,5 +1,5 @@
 """
-ModelRoutes.py
+model_1_routes.py
 
 Este módulo define las rutas para ejecutar el modelo de optimización energética
 utilizando Flask. Implementa validaciones, manejo de errores y documenta cada paso del proceso.
@@ -7,7 +7,7 @@ utilizando Flask. Implementa validaciones, manejo de errores y documenta cada pa
 
 from flask import Blueprint, request, jsonify
 from flask_cors import cross_origin
-from src.services.ModelServices import run_optimization
+from src.services.model_1_services import run_optimization
 import logging
 
 # Configurar logger para registrar errores y eventos importantes
