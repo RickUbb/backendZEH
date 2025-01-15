@@ -1,5 +1,5 @@
 """
-SolarPanelRoutes.py
+model_2_routes.py
 
 Este módulo define las rutas para optimizar la energía solar generada
 utilizando Flask. Implementa validaciones, manejo de errores y documenta cada paso del proceso.

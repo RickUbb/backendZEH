@@ -1,5 +1,5 @@
 """
-SolarPanelService.py
+model_2_services.py
 
 Este módulo define la lógica para calcular y optimizar la energía generada
 por un panel solar utilizando `numpy` y `scipy`.

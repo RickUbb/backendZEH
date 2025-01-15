@@ -1,57 +1,98 @@
 """
 model_4_services.py
 
-Este módulo define la lógica para ejecutar el modelo de predicción de consumo energético utilizando ARIMA.
+Este módulo define la lógica para realizar predicciones del consumo energético utilizando un modelo ARIMA.
+Genera predicciones basadas en datos históricos de consumo, incluyendo un intervalo de confianza y un gráfico visual.
 """
+
 
 import pandas as pd
 from statsmodels.tsa.arima.model import ARIMA
+import matplotlib.pyplot as plt
+import base64
+from io import BytesIO
+import datetime
+import random
+import logging
+
+# Configurar logger
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 
 def run_prediction(data):
     """
     Ejecuta el modelo de predicción de consumo energético basado en los datos proporcionados.
 
     Args:
-        data (dict): Diccionario con los parámetros del modelo. Debe contener:
-            - consumo_energia (list[float]): Energía consumida diariamente (kWh).
+        data (dict): Parámetros del modelo.
 
     Returns:
-        dict: Resultados de la predicción con los valores predichos y el intervalo de confianza.
-            - prediccion (float): Predicción del consumo total para el siguiente día.
-            - intervalo_confianza (tuple): Intervalo de confianza al 95%.
+        dict: Resultados de la predicción.
     """
     try:
-        # Extraer parámetros del diccionario
-        consumo_energia = data['consumo_energia']
+        dias_historicos = data['dias_historicos']
+        orden_arima = tuple(data['orden_arima'])
+        intervalo_confianza = data['intervalo_confianza']
 
-        # Validar que la lista de consumo energético no esté vacía
-        if not consumo_energia:
-            raise ValueError("La lista 'consumo_energia' no debe estar vacía.")
+        # Generar datos históricos ficticios
+        historico = []
+        for i in range(dias_historicos):
+            fecha = (datetime.datetime.now(
+            ) - datetime.timedelta(days=dias_historicos - i)).strftime('%Y-%m-%d')
+            electrodomesticos = {k: round(random.uniform(
+                0.01, 2.5), 2) for k in data['electrodomesticos'].keys()}
+            consumo_total = sum(electrodomesticos.values())
+            historico.append(
+                {"Fecha": fecha, "Consumo Total (kWh)": consumo_total, **electrodomesticos})
 
-        # Crear serie temporal
+        consumo_energia = [entry["Consumo Total (kWh)"] for entry in historico]
         serie_temporal = pd.Series(consumo_energia)
 
-        # Dividir los datos en entrenamiento (todos menos el último día) y prueba (último día)
-        train = serie_temporal[:-1]
-        test = serie_temporal[-1:]
+        # Ajustar modelo ARIMA sin validación de estacionariedad
+        modelo = ARIMA(serie_temporal, order=orden_arima)
+        modelo_fit = modelo.fit()
 
-        # Entrenar el modelo ARIMA
-        modelo = ARIMA(train, order=(5, 1, 0))  # Orden (p,d,q) del modelo ARIMA
-        modelo_ajustado = modelo.fit()
+        prediccion = modelo_fit.get_forecast(steps=1)
+        prediccion_valor = prediccion.predicted_mean.iloc[0]
+        intervalo = prediccion.conf_int(alpha=1 - intervalo_confianza).iloc[0]
 
-        # Realizar la predicción para el siguiente día
-        prediccion = modelo_ajustado.get_forecast(steps=1)
-        conf_int = prediccion.conf_int(alpha=0.05)  # Intervalo de confianza al 95%
+        # Generar gráfico
+        plt.figure(figsize=(10, 5))
+        plt.plot(serie_temporal, label='Consumo Real')
+        plt.plot([len(serie_temporal)], [prediccion_valor],
+                 marker='o', color='red', label='Predicción')
+        plt.fill_between([len(serie_temporal)], intervalo[0],
+                         intervalo[1], color='pink', alpha=0.3, label='Confianza')
+        plt.legend()
+        plt.title('Consumo Real vs Predicción')
+        plt.xlabel('Días')
+        plt.ylabel('Consumo (kWh)')
+        plt.grid(True)
 
-        # Retornar resultados
-        return {
-            "prediccion": prediccion.predicted_mean.iloc[0],
-            "intervalo_confianza": (conf_int.iloc[0, 0], conf_int.iloc[0, 1])
+        buffer = BytesIO()
+        plt.savefig(buffer, format='png')
+        buffer.seek(0)
+        imagen_base64 = base64.b64encode(buffer.getvalue()).decode('utf-8')
+        buffer.close()
+
+        # Corregir fecha de predicción para ser el día siguiente al último histórico
+        ultima_fecha_historico = datetime.datetime.strptime(
+            historico[-1]['Fecha'], '%Y-%m-%d')
+        fecha_prediccion = (ultima_fecha_historico +
+                            datetime.timedelta(days=1)).strftime('%Y-%m-%d')
+
+        resultados = {
+            "historico": historico,
+            "prediccion": {
+                "fecha_prediccion": fecha_prediccion,
+                "consumo_predicho": prediccion_valor,
+                "intervalo_confianza": {"inferior": intervalo[0], "superior": intervalo[1]}
+            }
         }
 
-    except KeyError as e:
-        # Capturar errores relacionados con claves faltantes
-        raise KeyError(f"Clave faltante en los datos de entrada: {e}")
+        return resultados
+
     except Exception as e:
-        # Capturar cualquier otro error y volver a lanzarlo
-        raise RuntimeError(f"Error al ejecutar el modelo: {str(e)}")
+        logger.error(f"Error en la predicción: {str(e)}")
+        raise RuntimeError(f"Error inesperado: {str(e)}")
