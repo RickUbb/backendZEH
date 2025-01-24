@@ -82,7 +82,10 @@ def simulate():
             tuple(data['precio_energia_range']),
             tuple(data['produccion_solar_range']),
             tuple(data['consumo_energia_range']),
-            data['impuesto_mensual']
+            data['impuesto_mensual'],
+            data['region'],
+            data['area_vivienda'],
+            data['consumo_mensual']
         )
 
         # Responder con los resultados
