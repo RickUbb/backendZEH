@@ -2,9 +2,12 @@
 model_1_services.py
 
 Este módulo define la lógica para ejecutar el modelo de optimización energética utilizando `pulp`.
+El modelo ahora es un modelo de programación lineal entera (PLE), donde el área de paneles solares
+y la capacidad de la batería son variables enteras.
 """
 
 import pulp
+import numpy as np
 
 
 def run_optimization(data):
@@ -23,8 +26,10 @@ def run_optimization(data):
 
     Returns:
         dict: Resultados de la optimización con los valores óptimos de las variables.
-            - Area_Panel_m2: Área óptima de paneles solares.
-            - Capacidad_Bateria_kWh: Capacidad óptima de la batería.
+            - Area_Panel_m2: Área óptima de paneles solares (entera).
+            - Capacidad_Bateria_kWh: Capacidad óptima de la batería (entera).
+            - Generacion_Solar_kWh_m2: Lista con la generación solar por día.
+            - Consumo_Energetico_kWh: Lista con el consumo energético por día.
             - Estado_Carga_kWh: Lista con el estado de carga de la batería por día.
     """
     try:
@@ -37,8 +42,13 @@ def run_optimization(data):
         gamma = data['gamma']  # Eficiencia de la batería
         r = data['r']  # Tasa máxima de carga/descarga
         X_max = data['X_max']  # Área máxima disponible para paneles solares
-        generacion_solar = data['generacion_solar']  # Generación solar diaria
-        consumo_energia = data['consumo_energia']  # Consumo energético diario
+
+        # Generación de datos sintéticos de generación solar y consumo energético
+        # Fijar semilla para reproducibilidad
+        # np.random.seed(42)
+        generacion_solar = np.random.uniform(
+            2, 6, K)  # kWh/m² generados por día
+        consumo_energia = np.random.uniform(5, 14, K)  # Consumo diario en kWh
 
         # Verificar dimensiones de listas
         if len(generacion_solar) != K or len(consumo_energia) != K:
@@ -49,15 +59,16 @@ def run_optimization(data):
         modelo = pulp.LpProblem("Optimizacion_Energetica", pulp.LpMinimize)
 
         # Variables de decisión
-        # Área de paneles solares
-        X1 = pulp.LpVariable("Area_Panel", lowBound=0, upBound=X_max)
-        # Capacidad de la batería
-        X2 = pulp.LpVariable("Capacidad_Bateria", lowBound=0)
-        # Estado de carga de la batería
+        # Área de paneles solares (entera)
+        X1 = pulp.LpVariable("Area_Panel", lowBound=0,
+                             upBound=X_max, cat='Integer')
+        # Capacidad de la batería (entera)
+        X2 = pulp.LpVariable("Capacidad_Bateria", lowBound=0, cat='Integer')
+        # Estado de carga de la batería (continuo)
         X3 = [pulp.LpVariable(f"SoC_{k}", lowBound=0) for k in range(K)]
-        exceso = [pulp.LpVariable(f"Exceso_{k}", lowBound=0)
-                  for k in range(K)]  # Energía excedente
-        # Energía deficitaria
+        # Energía excedente (continuo)
+        exceso = [pulp.LpVariable(f"Exceso_{k}", lowBound=0) for k in range(K)]
+        # Energía deficitaria (continuo)
         deficit = [pulp.LpVariable(
             f"Deficit_{k}", lowBound=0) for k in range(K)]
 
@@ -108,8 +119,8 @@ def run_optimization(data):
                 "No se encontró una solución óptima para el modelo.")
 
         # Extraer valores óptimos de las variables
-        X1_value = X1.varValue  # Área óptima de panel solar
-        X2_value = X2.varValue  # Capacidad óptima de la batería
+        X1_value = int(X1.varValue)  # Área óptima de panel solar (entera)
+        X2_value = int(X2.varValue)  # Capacidad óptima de la batería (entera)
         # Estado de carga diario
         X3_values = [X3[k].varValue for k in range(K)]
 
@@ -117,6 +128,8 @@ def run_optimization(data):
         return {
             "Area_Panel_m2": X1_value,
             "Capacidad_Bateria_kWh": X2_value,
+            "Generacion_Solar_kWh_m2": generacion_solar.tolist(),
+            "Consumo_Energetico_kWh": consumo_energia.tolist(),
             "Estado_Carga_kWh": X3_values
         }
 

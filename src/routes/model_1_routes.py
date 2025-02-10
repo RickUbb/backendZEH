@@ -87,10 +87,10 @@ def optimize():
                 "'generacion_solar' y 'consumo_energia' deben ser listas de números.")
             return jsonify({"status": "error", "message": "'generacion_solar' y 'consumo_energia' deben ser listas de números."}), 400
 
-        if len(data['generacion_solar']) != data['K'] or len(data['consumo_energia']) != data['K']:
+        """if len(data['generacion_solar']) != data['K'] or len(data['consumo_energia']) != data['K']:
             logger.error(
                 "Las listas 'generacion_solar' y 'consumo_energia' deben tener longitud igual a 'K'.")
-            return jsonify({"status": "error", "message": "Las listas 'generacion_solar' y 'consumo_energia' deben tener longitud igual a 'K'."}), 400
+            return jsonify({"status": "error", "message": "Las listas 'generacion_solar' y 'consumo_energia' deben tener longitud igual a 'K'."}), 400"""
 
         # Ejecutar el modelo de optimización
         results = run_optimization(data)
