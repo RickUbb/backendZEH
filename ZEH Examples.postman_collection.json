@@ -1,0 +1,382 @@
+{
+	"info": {
+		"_postman_id": "4c8ed84c-57b0-4483-a18b-b55100a2870d",
+		"name": "ZEH Examples",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27985625"
+	},
+	"item": [
+		{
+			"name": "Modulo 1 Local",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"K\": 30,\r\n  \"c1\": 100,\r\n  \"c2\": 500,\r\n  \"c3\": 0.05,\r\n  \"c4\": 0.25,\r\n  \"gamma\": 0.90,\r\n  \"r\": 0.2,\r\n  \"X_max\": 20,\r\n  \"generacion_solar\": [5.1, 5.3, 5.7, 5.5, 4.9, 5.2, 5.4, 5.6, 5.5, 5.3, 5.0, 5.1, 5.2, 5.4, 5.7, 5.3, 5.1, 5.6, 5.5, 5.4, 5.3, 5.7, 5.5, 5.1, 5.3, 5.4, 5.2, 5.1, 5.3, 5.4],\r\n  \"consumo_energia\": [10.5, 11.0, 10.8, 10.3, 10.9, 10.4, 10.7, 11.1, 10.6, 10.2, 10.7, 10.9, 10.5, 10.3, 10.8, 10.6, 10.4, 11.0, 10.9, 10.7, 10.8, 10.5, 10.6, 10.9, 10.4, 10.2, 10.8, 10.7, 10.5, 10.6]\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/v1/modulo1/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"modulo1",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Modulo 1 Local",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"K\": 30,\r\n  \"c1\": 100,\r\n  \"c2\": 500,\r\n  \"c3\": 0.05,\r\n  \"c4\": 0.25,\r\n  \"gamma\": 0.90,\r\n  \"r\": 0.2,\r\n  \"X_max\": 20,\r\n  \"generacion_solar\": [5.1, 5.3, 5.7, 5.5, 4.9, 5.2, 5.4, 5.6, 5.5, 5.3, 5.0, 5.1, 5.2, 5.4, 5.7, 5.3, 5.1, 5.6, 5.5, 5.4, 5.3, 5.7, 5.5, 5.1, 5.3, 5.4, 5.2, 5.1, 5.3, 5.4],\r\n  \"consumo_energia\": [10.5, 11.0, 10.8, 10.3, 10.9, 10.4, 10.7, 11.1, 10.6, 10.2, 10.7, 10.9, 10.5, 10.3, 10.8, 10.6, 10.4, 11.0, 10.9, 10.7, 10.8, 10.5, 10.6, 10.9, 10.4, 10.2, 10.8, 10.7, 10.5, 10.6]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/modulo1/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"modulo1",
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Werkzeug/3.1.3 Python/3.12.2"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Feb 2025 23:14:11 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "1545"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"results\": {\n        \"Area_Panel_m2\": 3,\n        \"Capacidad_Bateria_kWh\": 50,\n        \"Consumo_Energetico_kWh\": [\n            11.945228941151981,\n            11.300514318873939,\n            9.263212024708182,\n            10.105812473308458,\n            12.328737457954986,\n            7.365073143348871,\n            9.440282477596849,\n            5.319920618852531,\n            8.571417743829507,\n            13.351141587737757,\n            12.888847508274111,\n            10.276779077068287,\n            9.01049181637774,\n            9.67101861179088,\n            10.440323375493147,\n            10.91947097964589,\n            5.411659611102637,\n            7.257250831405341,\n            6.37767497638424,\n            8.14920545728381,\n            12.01273330499609,\n            10.874276044451392,\n            10.316473416830135,\n            5.5977554361442525,\n            13.074593845108243,\n            11.032263746250175,\n            13.931757123571472,\n            12.933170504071976,\n            10.16192169866131,\n            13.590153352363565\n        ],\n        \"Estado_Carga_kWh\": [\n            1.152491,\n            3.9736324,\n            8.9618913,\n            7.7472899,\n            11.63719,\n            20.440256,\n            19.516882,\n            29.36805,\n            26.004795,\n            27.642829,\n            20.56113,\n            22.068438,\n            25.531326,\n            24.104893,\n            27.71509,\n            30.840752,\n            29.771127,\n            31.09922,\n            35.043341,\n            31.879304,\n            32.581453,\n            34.844064,\n            32.534316,\n            39.372404,\n            34.557457,\n            34.769701,\n            28.887471,\n            25.559312,\n            23.012832,\n            23.040516\n        ],\n        \"Generacion_Solar_kWh_m2\": [\n            4.365906663662123,\n            4.745634928798615,\n            4.882944713113357,\n            3.2624667280953052,\n            5.664455366636439,\n            5.777286138652341,\n            3.5203114285793133,\n            5.707592410344493,\n            2.7149891471335645,\n            5.863218410241583,\n            2.8571435757180748,\n            4.613400299801815,\n            4.893407650200054,\n            3.599239489751879,\n            5.487003323835593,\n            5.605547387239014,\n            2.47536968148767,\n            3.8541522533729426,\n            4.477239454862926,\n            2.829833944300752,\n            5.300937717221352,\n            5.46501074278879,\n            3.8303773089613067,\n            5.229758449699838,\n            4.065628858503222,\n            4.90008458148982,\n            3.8421657719339786,\n            4.164586287991011,\n            3.3904574734859185,\n            5.306373440623826\n        ]\n    },\n    \"status\": \"success\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Modulo 2 Local",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "   {\r\n       \"A\": 10,\r\n       \"eta\": 0.20,\r\n       \"I_promedio\": 5.5,\r\n       \"horas_sol\": 12\r\n   }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/v1/modulo2/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"modulo2",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Modulo 2 Local",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "   {\r\n       \"A\": 10,\r\n       \"eta\": 0.20,\r\n       \"I_promedio\": 5.5,\r\n       \"horas_sol\": 12\r\n   }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/modulo2/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"modulo2",
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Werkzeug/3.1.3 Python/3.12.2"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Feb 2025 23:14:28 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "2546"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"results\": [\n        {\n            \"Energía Generada (kWh)\": 7.762249730679219,\n            \"Hora\": 6,\n            \"Inclinación (θ)\": 29.99578629497412,\n            \"Orientación (φ)\": -90.00275632062403,\n            \"Radiación Solar (kWh/m²)\": 3.8811248792036737\n        },\n        {\n            \"Energía Generada (kWh)\": 8.901415716554103,\n            \"Hora\": 7,\n            \"Inclinación (θ)\": 30.51226022267139,\n            \"Orientación (φ)\": -75.000005315095,\n            \"Radiación Solar (kWh/m²)\": 4.450707859169853\n        },\n        {\n            \"Energía Generada (kWh)\": 9.41061296530115,\n            \"Hora\": 8,\n            \"Inclinación (θ)\": 32.00994432141752,\n            \"Orientación (φ)\": -60.00084358229631,\n            \"Radiación Solar (kWh/m²)\": 4.705306483093152\n        },\n        {\n            \"Energía Generada (kWh)\": 8.194602597839651,\n            \"Hora\": 9,\n            \"Inclinación (θ)\": 34.395815699986194,\n            \"Orientación (φ)\": -45.004917773841825,\n            \"Radiación Solar (kWh/m²)\": 4.097301312843194\n        },\n        {\n            \"Energía Generada (kWh)\": 8.921356735491022,\n            \"Hora\": 10,\n            \"Inclinación (θ)\": 37.50004831002701,\n            \"Orientación (φ)\": -30.00002238271866,\n            \"Radiación Solar (kWh/m²)\": 4.4606783677473105\n        },\n        {\n            \"Energía Generada (kWh)\": 11.689561835835285,\n            \"Hora\": 11,\n            \"Inclinación (θ)\": 41.11777105956639,\n            \"Orientación (φ)\": -14.999968258418075,\n            \"Radiación Solar (kWh/m²)\": 5.844780917921017\n        },\n        {\n            \"Energía Generada (kWh)\": 13.025758114250648,\n            \"Hora\": 12,\n            \"Inclinación (θ)\": 45.00003805556102,\n            \"Orientación (φ)\": 0,\n            \"Radiación Solar (kWh/m²)\": 6.51287905712676\n        },\n        {\n            \"Energía Generada (kWh)\": 10.312037428354495,\n            \"Hora\": 13,\n            \"Inclinación (θ)\": 48.88227480262842,\n            \"Orientación (φ)\": 14.99986234704303,\n            \"Radiación Solar (kWh/m²)\": 5.156018714183776\n        },\n        {\n            \"Energía Generada (kWh)\": 9.08128075558519,\n            \"Hora\": 14,\n            \"Inclinación (θ)\": 52.497955207142404,\n            \"Orientación (φ)\": 29.99300491101292,\n            \"Radiación Solar (kWh/m²)\": 4.540640393225517\n        },\n        {\n            \"Energía Generada (kWh)\": 11.123905439245979,\n            \"Hora\": 15,\n            \"Inclinación (θ)\": 55.606535874932334,\n            \"Orientación (φ)\": 44.99998377258229,\n            \"Radiación Solar (kWh/m²)\": 5.561952719626733\n        },\n        {\n            \"Energía Generada (kWh)\": 12.78693085755561,\n            \"Hora\": 16,\n            \"Inclinación (θ)\": 57.988327300782366,\n            \"Orientación (φ)\": 59.99373186920981,\n            \"Radiación Solar (kWh/m²)\": 6.393465443635284\n        },\n        {\n            \"Energía Generada (kWh)\": 10.36963048753655,\n            \"Hora\": 17,\n            \"Inclinación (θ)\": 59.48865717731929,\n            \"Orientación (φ)\": 74.99223727457036,\n            \"Radiación Solar (kWh/m²)\": 5.184815256076416\n        }\n    ],\n    \"status\": \"success\",\n    \"total_energy\": 121.57934266422892\n}"
+				}
+			]
+		},
+		{
+			"name": "Modulo 3 Locall Copy",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"num_simulaciones\": 10000,\r\n  \"precio_energia_range\": [0.05, 0.15],\r\n  \"produccion_solar_range\": [3, 7],\r\n  \"consumo_energia_range\": [10, 30],\r\n  \"impuesto_mensual\": 5,\r\n  \"region\": \"SIERRA\",\r\n  \"area_vivienda\": 80,\r\n  \"consumo_mensual\": 150\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/v1/modulo3/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"modulo3",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Modulo 3 Locall Copy",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"num_simulaciones\": 10000,\r\n  \"precio_energia_range\": [0.05, 0.15],\r\n  \"produccion_solar_range\": [3, 7],\r\n  \"consumo_energia_range\": [10, 30],\r\n  \"impuesto_mensual\": 5,\r\n  \"region\": \"SIERRA\",\r\n  \"area_vivienda\": 80,\r\n  \"consumo_mensual\": 150\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/modulo3/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"modulo3",
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Werkzeug/3.1.3 Python/3.12.2"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Feb 2025 23:14:34 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "319"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"results\": {\n        \"area_vivienda\": 80,\n        \"consumo_mensual\": 150,\n        \"inversion_promedio\": 1000,\n        \"periodo_recuperacion_promedio\": 2.4521815883546156,\n        \"probabilidad_vpn_positivo\": 100,\n        \"produccion_anual_promedio\": 1831.110307399124,\n        \"region\": \"SIERRA\",\n        \"roi_promedio\": 54.684925370866004,\n        \"vpn_promedio\": 500.82252826820866\n    },\n    \"status\": \"success\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Modulo 4 Local",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"electrodomesticos\": {\r\n    \"Aire acondicionado\": 1.5,\r\n    \"Televisor\": 0.1,\r\n    \"Refrigeradora\": 1.2,\r\n    \"Bombillas LED\": 0.01,\r\n    \"Lavadora\": 0.5,\r\n    \"Secadora\": 2.0,\r\n    \"Microondas\": 0.9,\r\n    \"Computadora de escritorio\": 0.2,\r\n    \"Cargador de teléfono\": 0.01\r\n  },\r\n  \"dias_historicos\": 30,\r\n  \"orden_arima\": [5, 1, 0],\r\n  \"intervalo_confianza\": 0.95\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/v1/modulo4/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"modulo4",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Modulo 4 Local",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"electrodomesticos\": {\r\n    \"Aire acondicionado\": 1.5,\r\n    \"Televisor\": 0.1,\r\n    \"Refrigeradora\": 1.2,\r\n    \"Bombillas LED\": 0.01,\r\n    \"Lavadora\": 0.5,\r\n    \"Secadora\": 2.0,\r\n    \"Microondas\": 0.9,\r\n    \"Computadora de escritorio\": 0.2,\r\n    \"Cargador de teléfono\": 0.01\r\n  },\r\n  \"dias_historicos\": 30,\r\n  \"orden_arima\": [5, 1, 0],\r\n  \"intervalo_confianza\": 0.95\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/modulo4/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"modulo4",
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Werkzeug/3.1.3 Python/3.12.2"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Feb 2025 23:14:48 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "7760"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"results\": {\n        \"historico\": [\n            {\n                \"Aire acondicionado\": 1,\n                \"Bombillas LED\": 2.49,\n                \"Cargador de teléfono\": 1.2,\n                \"Computadora de escritorio\": 2.08,\n                \"Consumo Total (kWh)\": 11.75,\n                \"Fecha\": \"2025-01-11\",\n                \"Lavadora\": 0.06,\n                \"Microondas\": 0.88,\n                \"Refrigeradora\": 1.26,\n                \"Secadora\": 2.3,\n                \"Televisor\": 0.48\n            },\n            {\n                \"Aire acondicionado\": 2.21,\n                \"Bombillas LED\": 0.07,\n                \"Cargador de teléfono\": 2.24,\n                \"Computadora de escritorio\": 0.21,\n                \"Consumo Total (kWh)\": 13.26,\n                \"Fecha\": \"2025-01-12\",\n                \"Lavadora\": 1.8,\n                \"Microondas\": 0.21,\n                \"Refrigeradora\": 2.23,\n                \"Secadora\": 2.09,\n                \"Televisor\": 2.2\n            },\n            {\n                \"Aire acondicionado\": 0.58,\n                \"Bombillas LED\": 0.02,\n                \"Cargador de teléfono\": 1.92,\n                \"Computadora de escritorio\": 2.21,\n                \"Consumo Total (kWh)\": 8.92,\n                \"Fecha\": \"2025-01-13\",\n                \"Lavadora\": 0.78,\n                \"Microondas\": 0.81,\n                \"Refrigeradora\": 0.3,\n                \"Secadora\": 0.63,\n                \"Televisor\": 1.67\n            },\n            {\n                \"Aire acondicionado\": 0.59,\n                \"Bombillas LED\": 1.15,\n                \"Cargador de teléfono\": 1.41,\n                \"Computadora de escritorio\": 2.28,\n                \"Consumo Total (kWh)\": 9.99,\n                \"Fecha\": \"2025-01-14\",\n                \"Lavadora\": 0.37,\n                \"Microondas\": 1.9,\n                \"Refrigeradora\": 0.59,\n                \"Secadora\": 0.87,\n                \"Televisor\": 0.83\n            },\n            {\n                \"Aire acondicionado\": 2.43,\n                \"Bombillas LED\": 0.51,\n                \"Cargador de teléfono\": 0.33,\n                \"Computadora de escritorio\": 1.61,\n                \"Consumo Total (kWh)\": 11.5,\n                \"Fecha\": \"2025-01-15\",\n                \"Lavadora\": 1.47,\n                \"Microondas\": 1.78,\n                \"Refrigeradora\": 0.51,\n                \"Secadora\": 1.07,\n                \"Televisor\": 1.79\n            },\n            {\n                \"Aire acondicionado\": 0.57,\n                \"Bombillas LED\": 1.59,\n                \"Cargador de teléfono\": 2,\n                \"Computadora de escritorio\": 1.09,\n                \"Consumo Total (kWh)\": 9.75,\n                \"Fecha\": \"2025-01-16\",\n                \"Lavadora\": 1.03,\n                \"Microondas\": 0.54,\n                \"Refrigeradora\": 0.63,\n                \"Secadora\": 2.25,\n                \"Televisor\": 0.05\n            },\n            {\n                \"Aire acondicionado\": 0.33,\n                \"Bombillas LED\": 1.58,\n                \"Cargador de teléfono\": 0.54,\n                \"Computadora de escritorio\": 0.2,\n                \"Consumo Total (kWh)\": 8.120000000000001,\n                \"Fecha\": \"2025-01-17\",\n                \"Lavadora\": 0.29,\n                \"Microondas\": 0.92,\n                \"Refrigeradora\": 1.65,\n                \"Secadora\": 1.05,\n                \"Televisor\": 1.56\n            },\n            {\n                \"Aire acondicionado\": 0.22,\n                \"Bombillas LED\": 1.93,\n                \"Cargador de teléfono\": 1.33,\n                \"Computadora de escritorio\": 0.32,\n                \"Consumo Total (kWh)\": 10.42,\n                \"Fecha\": \"2025-01-18\",\n                \"Lavadora\": 0.65,\n                \"Microondas\": 1.73,\n                \"Refrigeradora\": 1.89,\n                \"Secadora\": 2.33,\n                \"Televisor\": 0.02\n            },\n            {\n                \"Aire acondicionado\": 1.89,\n                \"Bombillas LED\": 1.99,\n                \"Cargador de teléfono\": 0.14,\n                \"Computadora de escritorio\": 0.19,\n                \"Consumo Total (kWh)\": 11.37,\n                \"Fecha\": \"2025-01-19\",\n                \"Lavadora\": 1.7,\n                \"Microondas\": 0.45,\n                \"Refrigeradora\": 2.05,\n                \"Secadora\": 0.85,\n                \"Televisor\": 2.11\n            },\n            {\n                \"Aire acondicionado\": 1.16,\n                \"Bombillas LED\": 2.42,\n                \"Cargador de teléfono\": 2.06,\n                \"Computadora de escritorio\": 1.63,\n                \"Consumo Total (kWh)\": 10.959999999999999,\n                \"Fecha\": \"2025-01-20\",\n                \"Lavadora\": 0.52,\n                \"Microondas\": 0.36,\n                \"Refrigeradora\": 0.98,\n                \"Secadora\": 0.33,\n                \"Televisor\": 1.5\n            },\n            {\n                \"Aire acondicionado\": 1.93,\n                \"Bombillas LED\": 0.58,\n                \"Cargador de teléfono\": 0.34,\n                \"Computadora de escritorio\": 0.81,\n                \"Consumo Total (kWh)\": 11.71,\n                \"Fecha\": \"2025-01-21\",\n                \"Lavadora\": 1.27,\n                \"Microondas\": 1.86,\n                \"Refrigeradora\": 2.16,\n                \"Secadora\": 2.47,\n                \"Televisor\": 0.29\n            },\n            {\n                \"Aire acondicionado\": 1.94,\n                \"Bombillas LED\": 1.84,\n                \"Cargador de teléfono\": 0.94,\n                \"Computadora de escritorio\": 2.17,\n                \"Consumo Total (kWh)\": 10.43,\n                \"Fecha\": \"2025-01-22\",\n                \"Lavadora\": 0.15,\n                \"Microondas\": 0.09,\n                \"Refrigeradora\": 0.12,\n                \"Secadora\": 1.89,\n                \"Televisor\": 1.29\n            },\n            {\n                \"Aire acondicionado\": 1.35,\n                \"Bombillas LED\": 1.28,\n                \"Cargador de teléfono\": 2.13,\n                \"Computadora de escritorio\": 1.46,\n                \"Consumo Total (kWh)\": 11.72,\n                \"Fecha\": \"2025-01-23\",\n                \"Lavadora\": 1.78,\n                \"Microondas\": 0.86,\n                \"Refrigeradora\": 1.22,\n                \"Secadora\": 0.09,\n                \"Televisor\": 1.55\n            },\n            {\n                \"Aire acondicionado\": 1.48,\n                \"Bombillas LED\": 2.25,\n                \"Cargador de teléfono\": 1.7,\n                \"Computadora de escritorio\": 1.88,\n                \"Consumo Total (kWh)\": 11.92,\n                \"Fecha\": \"2025-01-24\",\n                \"Lavadora\": 0.05,\n                \"Microondas\": 1.48,\n                \"Refrigeradora\": 0.39,\n                \"Secadora\": 1.05,\n                \"Televisor\": 1.64\n            },\n            {\n                \"Aire acondicionado\": 1.71,\n                \"Bombillas LED\": 2.27,\n                \"Cargador de teléfono\": 2.23,\n                \"Computadora de escritorio\": 1.44,\n                \"Consumo Total (kWh)\": 11.74,\n                \"Fecha\": \"2025-01-25\",\n                \"Lavadora\": 0.08,\n                \"Microondas\": 2.12,\n                \"Refrigeradora\": 0.59,\n                \"Secadora\": 0.67,\n                \"Televisor\": 0.63\n            },\n            {\n                \"Aire acondicionado\": 1.73,\n                \"Bombillas LED\": 2.2,\n                \"Cargador de teléfono\": 0.62,\n                \"Computadora de escritorio\": 0.36,\n                \"Consumo Total (kWh)\": 12.36,\n                \"Fecha\": \"2025-01-26\",\n                \"Lavadora\": 1.91,\n                \"Microondas\": 1.34,\n                \"Refrigeradora\": 2.01,\n                \"Secadora\": 2.14,\n                \"Televisor\": 0.05\n            },\n            {\n                \"Aire acondicionado\": 2.16,\n                \"Bombillas LED\": 0.38,\n                \"Cargador de teléfono\": 0.23,\n                \"Computadora de escritorio\": 0.62,\n                \"Consumo Total (kWh)\": 9.49,\n                \"Fecha\": \"2025-01-27\",\n                \"Lavadora\": 2.36,\n                \"Microondas\": 0.66,\n                \"Refrigeradora\": 1.35,\n                \"Secadora\": 0.77,\n                \"Televisor\": 0.96\n            },\n            {\n                \"Aire acondicionado\": 1.31,\n                \"Bombillas LED\": 0.44,\n                \"Cargador de teléfono\": 1.06,\n                \"Computadora de escritorio\": 1.89,\n                \"Consumo Total (kWh)\": 12.91,\n                \"Fecha\": \"2025-01-28\",\n                \"Lavadora\": 2.48,\n                \"Microondas\": 0.5,\n                \"Refrigeradora\": 0.46,\n                \"Secadora\": 2.33,\n                \"Televisor\": 2.44\n            },\n            {\n                \"Aire acondicionado\": 0.88,\n                \"Bombillas LED\": 0.26,\n                \"Cargador de teléfono\": 0.1,\n                \"Computadora de escritorio\": 1.11,\n                \"Consumo Total (kWh)\": 8.66,\n                \"Fecha\": \"2025-01-29\",\n                \"Lavadora\": 0.58,\n                \"Microondas\": 2.45,\n                \"Refrigeradora\": 1.61,\n                \"Secadora\": 0.64,\n                \"Televisor\": 1.03\n            },\n            {\n                \"Aire acondicionado\": 2.15,\n                \"Bombillas LED\": 1.35,\n                \"Cargador de teléfono\": 2.14,\n                \"Computadora de escritorio\": 0.94,\n                \"Consumo Total (kWh)\": 12.67,\n                \"Fecha\": \"2025-01-30\",\n                \"Lavadora\": 0.15,\n                \"Microondas\": 2.23,\n                \"Refrigeradora\": 1.43,\n                \"Secadora\": 0.69,\n                \"Televisor\": 1.59\n            },\n            {\n                \"Aire acondicionado\": 0.35,\n                \"Bombillas LED\": 1.54,\n                \"Cargador de teléfono\": 1.4,\n                \"Computadora de escritorio\": 0.31,\n                \"Consumo Total (kWh)\": 7.15,\n                \"Fecha\": \"2025-01-31\",\n                \"Lavadora\": 1.49,\n                \"Microondas\": 1.3,\n                \"Refrigeradora\": 0.13,\n                \"Secadora\": 0.08,\n                \"Televisor\": 0.55\n            },\n            {\n                \"Aire acondicionado\": 0.85,\n                \"Bombillas LED\": 2.27,\n                \"Cargador de teléfono\": 2.14,\n                \"Computadora de escritorio\": 2.05,\n                \"Consumo Total (kWh)\": 16.04,\n                \"Fecha\": \"2025-02-01\",\n                \"Lavadora\": 1.93,\n                \"Microondas\": 1.16,\n                \"Refrigeradora\": 1.49,\n                \"Secadora\": 1.7,\n                \"Televisor\": 2.45\n            },\n            {\n                \"Aire acondicionado\": 0.47,\n                \"Bombillas LED\": 2.13,\n                \"Cargador de teléfono\": 0.7,\n                \"Computadora de escritorio\": 2.49,\n                \"Consumo Total (kWh)\": 11.25,\n                \"Fecha\": \"2025-02-02\",\n                \"Lavadora\": 2.22,\n                \"Microondas\": 1.59,\n                \"Refrigeradora\": 0.8,\n                \"Secadora\": 0.09,\n                \"Televisor\": 0.76\n            },\n            {\n                \"Aire acondicionado\": 1.87,\n                \"Bombillas LED\": 1.35,\n                \"Cargador de teléfono\": 1.97,\n                \"Computadora de escritorio\": 0.84,\n                \"Consumo Total (kWh)\": 15.1,\n                \"Fecha\": \"2025-02-03\",\n                \"Lavadora\": 2.15,\n                \"Microondas\": 1.94,\n                \"Refrigeradora\": 1.29,\n                \"Secadora\": 1.85,\n                \"Televisor\": 1.84\n            },\n            {\n                \"Aire acondicionado\": 0.02,\n                \"Bombillas LED\": 0.88,\n                \"Cargador de teléfono\": 1.04,\n                \"Computadora de escritorio\": 0.7,\n                \"Consumo Total (kWh)\": 6.08,\n                \"Fecha\": \"2025-02-04\",\n                \"Lavadora\": 1.28,\n                \"Microondas\": 0.24,\n                \"Refrigeradora\": 0.26,\n                \"Secadora\": 1.12,\n                \"Televisor\": 0.54\n            },\n            {\n                \"Aire acondicionado\": 1.88,\n                \"Bombillas LED\": 2.27,\n                \"Cargador de teléfono\": 1.07,\n                \"Computadora de escritorio\": 2.01,\n                \"Consumo Total (kWh)\": 13.72,\n                \"Fecha\": \"2025-02-05\",\n                \"Lavadora\": 1.14,\n                \"Microondas\": 2.1,\n                \"Refrigeradora\": 1.1,\n                \"Secadora\": 1.23,\n                \"Televisor\": 0.92\n            },\n            {\n                \"Aire acondicionado\": 1.36,\n                \"Bombillas LED\": 0.81,\n                \"Cargador de teléfono\": 1.39,\n                \"Computadora de escritorio\": 1.64,\n                \"Consumo Total (kWh)\": 7.47,\n                \"Fecha\": \"2025-02-06\",\n                \"Lavadora\": 0.13,\n                \"Microondas\": 0.32,\n                \"Refrigeradora\": 0.35,\n                \"Secadora\": 1.09,\n                \"Televisor\": 0.38\n            },\n            {\n                \"Aire acondicionado\": 1.56,\n                \"Bombillas LED\": 0.45,\n                \"Cargador de teléfono\": 2.39,\n                \"Computadora de escritorio\": 2.41,\n                \"Consumo Total (kWh)\": 10.85,\n                \"Fecha\": \"2025-02-07\",\n                \"Lavadora\": 0.66,\n                \"Microondas\": 0.71,\n                \"Refrigeradora\": 0.25,\n                \"Secadora\": 2.2,\n                \"Televisor\": 0.22\n            },\n            {\n                \"Aire acondicionado\": 2.45,\n                \"Bombillas LED\": 0.52,\n                \"Cargador de teléfono\": 1.46,\n                \"Computadora de escritorio\": 0.91,\n                \"Consumo Total (kWh)\": 14.73,\n                \"Fecha\": \"2025-02-08\",\n                \"Lavadora\": 1.17,\n                \"Microondas\": 2.5,\n                \"Refrigeradora\": 2.1,\n                \"Secadora\": 1.81,\n                \"Televisor\": 1.81\n            },\n            {\n                \"Aire acondicionado\": 2,\n                \"Bombillas LED\": 2.44,\n                \"Cargador de teléfono\": 0.93,\n                \"Computadora de escritorio\": 2.2,\n                \"Consumo Total (kWh)\": 16.11,\n                \"Fecha\": \"2025-02-09\",\n                \"Lavadora\": 1.4,\n                \"Microondas\": 2.27,\n                \"Refrigeradora\": 2.26,\n                \"Secadora\": 1.72,\n                \"Televisor\": 0.89\n            }\n        ],\n        \"prediccion\": {\n            \"consumo_predicho\": 9.886427670176744,\n            \"fecha_prediccion\": \"2025-02-10\",\n            \"intervalo_confianza\": {\n                \"inferior\": 5.442556432622404,\n                \"superior\": 14.330298907731084\n            }\n        }\n    },\n    \"status\": \"success\"\n}"
+				}
+			]
+		}
+	]
+}

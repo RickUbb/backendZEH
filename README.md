@@ -1,6 +1,11 @@
 ---
+Los ejemplos de los endpoints se pueden usar y ver en POSTMAN importando el archivo "ZEH Examples.postman_collection.json" adjunto en este repositorio.
+---
+
 ### **1. Programación Lineal (Módulo 1): Optimización de Paneles Solares y Baterías**
+
 #### **Teoría Detallada**
+
 **Objetivo**: Minimizar el costo total de un sistema solar-batería, asegurando que la energía generada cubra el consumo diario.
 
 ---
