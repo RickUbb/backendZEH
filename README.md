@@ -1,391 +1,282 @@
-# **Modulo 1 Optimización Energética API**
-
-## 🌟 **Descripción**
-
-Esta API permite la optimización energética mediante un modelo matemático implementado con `pulp`. Calcula:
-
-- Área óptima de paneles solares.
-- Capacidad óptima de batería.
-- Estados diarios de carga de la batería.
-
-Es ideal para proyectos de simulación energética y aplicaciones de gestión de energía.
+---
+### **1. Programación Lineal (Módulo 1): Optimización de Paneles Solares y Baterías**
+#### **Teoría Detallada**
+**Objetivo**: Minimizar el costo total de un sistema solar-batería, asegurando que la energía generada cubra el consumo diario.
 
 ---
 
-## 📁 **Estructura del Proyecto**
+#### **Ecuaciones Matemáticas y Variables**
 
-├── src/
-│ ├── routes/
-│ │ ├── **init**.py # Inicialización del módulo de rutas
-│ │ ├── model_1_routes.py # Definición de las rutas de la API para el modelo de optimización energética
-│ │ ├── model_2_routes.py # Definición de las rutas de la API para la optimización de energía solar
-│ │ ├── model_3_routes.py # Definición de las rutas de la API para la simulación de Monte Carlo
-│ │ ├── model_4_routes.py # Definición de las rutas de la API para la predicción de consumo energético
-│ ├── services/
-│ │ ├── **init**.py # Inicialización del módulo de servicios
-│ │ ├── model_1_services.py # Lógica del modelo de optimización energética
-│ │ ├── model_2_services.py # Lógica para la optimización de energía solar
-│ │ ├── model_3_services.py # Lógica para la simulación de Monte Carlo
-│ │ ├── model_4_services.py # Lógica para la predicción de consumo energético
-│ ├── **init**.py # Inicialización de la aplicación Flask
-├── .gitignore # Archivos y carpetas a ignorar por Git
-├── main.py # Punto de entrada principal de la API
-├── README.md # Documentación del proyecto
-├── requirements.txt # Dependencias del proyecto
+1. **Variables de Decisión**:
+
+   - `\(X_1\)`: Área de paneles solares (m²) → **Entera** (no se instalan fracciones de panel).
+   - `\(X_2\)`: Capacidad de la batería (kWh) → **Entera** (baterías discretas).
+   - `\(X_3^{(k)}\)`: Estado de carga (SoC) de la batería en el día `\(k\)` (kWh).
+   - `\(E_k\)`: Excedente energético en el día `\(k\)` (kWh).
+   - `\(D_k\)`: Déficit energético en el día `\(k\)` (kWh).
+
+2. **Función Objetivo**:
+   \[
+   \text{Minimizar } Z = \underbrace{c*1 X_1}*{\text{Costo paneles}} + \underbrace{c*2 X_2}*{\text{Costo batería}} + \sum*{k=1}^K \left( \underbrace{c_3 E_k}*{\text{Beneficio excedente}} + \underbrace{c*4 D_k}*{\text{Costo déficit}} \right)
+   \]
+
+   - `\(c_1 = 100\)` USD/m², `\(c_2 = 500\)` USD/kWh, `\(c_3 = 0.05\)` USD/kWh, `\(c_4 = 0.25\)` USD/kWh.
+
+3. **Restricciones**:
+
+   - **Balance Energético**:
+     \[
+     X*3^{(k)} = \gamma X_3^{(k-1)} + \underbrace{X_1 G_k}*{\text{Generación}} - \underbrace{C*k}*{\text{Consumo}}, \quad \forall k = 1, ..., K
+     \]
+
+     - `\(G_k\)`: Generación solar en el día `\(k\)` (kWh/m²).
+     - `\(C_k\)`: Consumo energético en el día `\(k\)` (kWh).
+     - `\(\gamma = 0.9\)`: Eficiencia de carga/descarga de la batería.
+
+   - **Límites Físicos**:
+     \[
+     0 \leq X_3^{(k)} \leq X_2 \quad \text{(La batería no puede sobrecargarse ni descargarse por debajo de 0)}
+     \]
+     \[
+     |X_3^{(k)} - X_3^{(k-1)}| \leq r X_2 \quad \text{(Máxima tasa de carga/descarga diaria, \(r = 0.25\))}
+     \]
+
+   - **Criterio ZEH (Zero Energy Home)**:
+     \[
+     X*1 \sum*{k=1}^K G*k \geq \sum*{k=1}^K C_k \quad \text{(La energía generada debe cubrir el consumo total)}
+     \]
 
 ---
+
+#### **Implementación en Código**
+
+```python
+# Definición del modelo MILP (Mixed Integer Linear Programming)
+modelo = pulp.LpProblem("Optimizacion_Energetica", pulp.LpMinimize)
+
+# Variables enteras para paneles y batería
+X1 = pulp.LpVariable("Area_Panel", lowBound=0, upBound=X_max, cat='Integer')
+X2 = pulp.LpVariable("Capacidad_Bateria", lowBound=0, cat='Integer')
+
+# Restricción de balance energético
+for k in range(K):
+    if k == 0:
+        modelo += X3[k] == gamma * 0 + X1 * generacion_solar[k] - consumo_energia[k]
+    else:
+        modelo += X3[k] == gamma * X3[k-1] + X1 * generacion_solar[k] - consumo_energia[k]
+```
 
 ````
 
+#### **Análisis Crítico**
+
+- **Limitaciones**:
+  - Asume generación y consumo diarios **independientes** (no considera correlaciones climáticas).
+  - No modela degradación de paneles/baterías a largo plazo.
+- **Mejoras Propuestas**:
+  - Usar **programación estocástica** para incorporar incertidumbre en `\(G_k\)` y `\(C_k\)`.
+  - Incluir **costos de mantenimiento** en la función objetivo.
+
 ---
 
-## 🛠 **Instalación**
+### **2. Optimización No Lineal (Módulo 2): Orientación Óptima de Paneles**
 
-1. **Clonar el repositorio**:
-   ```bash
-   git clone https://github.com/tuusuario/tu-repositorio.git
-   cd "C:\Users\ricar\OneDrive\Documentos\Local Proyects\Models"
+#### **Teoría Detallada**
+
+**Objetivo**: Maximizar la energía generada `\(E(\theta, \phi)\)` ajustando la inclinación (`\(\theta\)`) y orientación (`\(\phi\)`) del panel.
+
+---
+
+#### **Ecuaciones Matemáticas**
+
+1. **Modelo de Radiación Solar**:
+   \[
+   E(\theta, \phi) = A \cdot \eta \cdot I \cdot \left( \sin\theta \sin\beta + \cos\theta \cos\beta \cos(\phi - \alpha) \right)
+   \]
+
+   - `\(A = 10\)` m²: Área del panel.
+   - `\(\eta = 0.2\)`: Eficiencia del panel.
+   - `\(I = 5.5\)` kWh/m²: Radiación solar.
+   - `\(\beta\)`: Altitud solar (ángulo sobre el horizonte).
+   - `\(\alpha\)`: Azimut solar (ángulo respecto al norte).
+
+2. **Optimización**:
+   \[
+   \text{Maximizar } E(\theta, \phi) \quad \text{sujeto a } 0 \leq \theta \leq 90°, \quad -180° \leq \phi \leq 180°
+   \]
+
+---
+
+#### **Implementación en Código**
+
+```python
+def energia(theta_phi, beta, alpha, area, eficiencia, radiacion):
+    theta, phi = theta_phi
+    theta_rad = np.radians(theta)
+    phi_rad = np.radians(phi)
+    return -area * eficiencia * radiacion * (
+        np.sin(theta_rad) * np.sin(beta) +
+        np.cos(theta_rad) * np.cos(beta) * np.cos(phi_rad - alpha)
+    )
+
+# Minimizar la función negativa para maximizar energía
+res = minimize(energia, [30, 0], args=(beta, alpha, A, eta, radiacion_hora),
+              bounds=[(0, 90), (-180, 180)], method='L-BFGS-B')
+```
+
+#### **Análisis Crítico**
+
+- **Limitaciones**:
+  - Modelo **determinista**: No considera nubosidad o sombras variables.
+  - Asume radiación solar constante por hora.
+- **Mejoras Propuestas**:
+  - Usar datos reales de radiación horaria (API de NSRDB).
+  - Incluir un **seguidor solar dinámico** en tiempo real.
+
+---
+
+### **3. Modelos de Decisión (Módulo 3): Simulación de Monte Carlo**
+
+#### **Teoría Detallada**
+
+**Objetivo**: Evaluar la **viabilidad financiera** de instalar paneles solares bajo incertidumbre.
+
+---
+
+#### **Ecuaciones Matemáticas**
+
+1. **Variables Aleatorias**:
+
+   - `\(P \sim U(0.05, 0.15)\)`: Precio de energía (USD/kWh).
+   - `\(G \sim U(3, 7)\)`: Generación solar diaria (kWh/m²).
+   - `\(C \sim U(10, 30)\)`: Consumo diario (kWh).
+
+2. **Ahorro Anual**:
+   \[
+   \text{Ahorro} = \left( C - G \right) \cdot P \cdot 365 \quad \text{(Si } C > G \text{)}
+   \]
+
+3. **Valor Presente Neto (VPN)**:
+   \[
+   \text{VPN} = -I*0 + \sum*{t=1}^{T} \frac{\text{Ahorro}\_t}{(1 + r)^t}
+   \]
+
+   - `\(I_0 = 1000\)` USD: Inversión inicial.
+   - `\(r = 0.05\)`: Tasa de descuento anual.
+
+4. **Retorno sobre Inversión (ROI)**:
+   \[
+   \text{ROI} = \left( \frac{\text{Ahorro Anual}}{I_0} \right) \times 100\%
+   \]
+
+---
+
+#### **Implementación en Código**
+
+```python
+# Simulación de Monte Carlo
+for _ in range(num_simulaciones):
+    precio_energia = np.random.uniform(0.05, 0.15)
+    produccion_solar = np.random.uniform(3, 7)
+    consumo_energia = np.random.uniform(10, 30)
+
+    energia_red = max(0, consumo_energia - produccion_solar)
+    ahorro_anual = energia_red * precio_energia * 365
+
+    # Cálculo de VPN y ROI
+    periodo_recuperacion = inversion_inicial / ahorro_anual
+    roi = (ahorro_anual * 100) / inversion_inicial
+    vpn = ahorro_anual / (1 + 0.05) ** periodo_recuperacion
+```
+
+#### **Análisis Crítico**
+
+- **Limitaciones**:
+  - Asume **independencia** entre `\(P\)`, `\(G\)`, y `\(C\)` (poco realista).
+  - No considera inflación o cambios en políticas energéticas.
+- **Mejoras Propuestas**:
+  - Usar **Copulas** para modelar dependencias entre variables.
+  - Incluir un modelo de **inflación estocástica**.
+
+---
+
+### **4. Series de Tiempo (Módulo 4): Predicción con ARIMA**
+
+#### **Teoría Detallada**
+
+**Objetivo**: Predecir el consumo energético futuro usando patrones históricos.
+
+---
+
+#### **Ecuaciones Matemáticas**
+
+1. **Modelo ARIMA(p, d, q)**:
+   \[
+   \underbrace{(1 - \phi*1 B - \dots - \phi_p B^p)}*{\text{AR(p)}} \underbrace{(1 - B)^d}_{\text{I(d)}} y_t = \underbrace{(1 + \theta_1 B + \dots + \theta_q B^q) \varepsilon_t}_{\text{MA(q)}}
+   \]
+
+   - `\(B\)`: Operador de retardo (`\(B y_t = y_{t-1}\)`).
+   - `\(\phi_i\)`: Coeficientes autoregresivos.
+   - `\(\theta_i\)`: Coeficientes de media móvil.
+   - `\(\varepsilon_t\)`: Ruido blanco (media cero, varianza constante).
+
+2. **Predicción con Intervalo de Confianza**:
+   \[
+   \hat{y}_{t+1} \pm z_{\alpha/2} \cdot \sigma\_{\varepsilon}
+   \]
+   - `\(z_{\alpha/2}\)`: Valor crítico de la distribución normal (ej: 1.96 para 95% de confianza).
+   - `\(\sigma_{\varepsilon}\)`: Desviación estándar de los residuos.
+
+---
+
+#### **Implementación en Código**
+
+```python
+# Ajuste del modelo ARIMA(5,1,0)
+modelo = ARIMA(serie_temporal, order=(5, 1, 0))
+modelo_fit = modelo.fit()
+
+# Predicción con intervalo de confianza
+prediccion = modelo_fit.get_forecast(steps=1)
+prediccion_valor = prediccion.predicted_mean.iloc[0]
+intervalo = prediccion.conf_int(alpha=0.05).iloc[0]
+```
+
+#### **Análisis Crítico**
+
+- **Limitaciones**:
+  - **Univariante**: Ignora variables exógenas (ej: temperatura).
+  - **Estacionariedad**: Requiere diferenciación manual (`\(d=1\)`).
+- **Mejoras Propuestas**:
+  - Usar **SARIMAX** para incluir estacionalidad y variables externas.
+  - Automatizar la selección de `\(p, d, q\)` con **AutoARIMA**.
+
+---
+
+### **Resumen Integrador**
+
+| **Concepto**                 | **Programación Lineal**       | **Optimización No Lineal**       | **Monte Carlo**            | **Series de Tiempo**       |
+| ---------------------------- | ----------------------------- | -------------------------------- | -------------------------- | -------------------------- |
+| **Naturaleza del Problema**  | Determinista, lineal          | Determinista, no lineal          | Estocástico                | Estocástico, temporal      |
+| **Variables Clave**          | `\(X_1, X_2, E_k, D_k\)`      | `\(\theta, \phi\)`               | `\(P, G, C\)`              | `\(y_t, \varepsilon_t\)`   |
+| **Herramientas Matemáticas** | MILP, Simplex, Branch & Bound | Optimización con restricciones   | Distribuciones Uniformes   | ARIMA, Diferenciación      |
+| **Limitaciones**             | Supuestos simplificados       | Modelo físico idealizado         | Independencia de variables | Univariante, no estacional |
+| **Mejoras Futuras**          | Programación Estocástica      | Datos satelitales en tiempo real | Modelos de Copulas         | SARIMAX, Prophet           |
+
+---
+
+### **Conclusión General**
+
+Cada módulo aborda una faceta crítica del diseño de sistemas energéticos:
+
+1. **Programación Lineal**: Dimensionamiento óptimo de recursos físicos.
+2. **Optimización No Lineal**: Ajuste fino de parámetros operativos.
+3. **Monte Carlo**: Evaluación de riesgos financieros.
+4. **Series de Tiempo**: Pronóstico de demanda energética.
+
+Al integrar estos módulos, se logra un sistema holístico para la toma de decisiones en energía renovable, desde la instalación hasta la operación diaria. ¿Te gustaría explorar algún módulo en mayor profundidad? 😊
+
+```
+
+```
 ````
-
-2. **Crear un entorno virtual**:
-
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # En Windows: venv\Scripts\activate
-   ```
-
-3. **Instalar dependencias**:
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Configurar variables de entorno**:
-   Crea un archivo `.env` basado en las necesidades del proyecto, si es requerido.
-
----
-
-## 🚀 **Uso**
-
-1. **Ejecutar la aplicación**:
-
-   ```bash
-   python main.py
-   ```
-
-2. **Probar la API**:
-   La API estará disponible en `http://localhost:5000`.
-
-3. **Endpoint principal**:
-
-   **POST** `/optimize/`
-
-   ### **Parámetros de Entrada**
-
-   Enviar un JSON con los siguientes campos:
-   | Campo | Tipo | Descripción |
-   |---------------------|--------------|----------------------------------------------------------|
-   | `K` | `int` | Número de días de simulación |
-   | `c1` | `float` | Costo por m² de panel solar |
-   | `c2` | `float` | Costo por kWh de batería |
-   | `c3` | `float` | Tarifa por kWh de energía sobrante |
-   | `c4` | `float` | Costo por kWh de déficit energético |
-   | `gamma` | `float` | Eficiencia de la batería |
-   | `r` | `float` | Tasa máxima de carga/descarga de la batería |
-   | `X_max` | `float` | Área máxima disponible para paneles solares (m²) |
-   | `generacion_solar` | `list[float]`| Lista con generación solar diaria (kWh/m²) |
-   | `consumo_energia` | `list[float]`| Lista con consumo energético diario (kWh) |
-
-   ### **Ejemplo de Entrada**
-
-   ```json
-   {
-     "K": 30,
-     "c1": 100,
-     "c2": 500,
-     "c3": 0.05,
-     "c4": 0.25,
-     "gamma": 0.9,
-     "r": 0.2,
-     "X_max": 20,
-     "generacion_solar": [
-       5.1, 5.3, 5.7, 5.5, 4.9, 5.2, 5.4, 5.6, 5.5, 5.3, 5.0, 5.1, 5.2, 5.4,
-       5.7, 5.3, 5.1, 5.6, 5.5, 5.4, 5.3, 5.7, 5.5, 5.1, 5.3, 5.4, 5.2, 5.1,
-       5.3, 5.4
-     ],
-     "consumo_energia": [
-       10.5, 11.0, 10.8, 10.3, 10.9, 10.4, 10.7, 11.1, 10.6, 10.2, 10.7, 10.9,
-       10.5, 10.3, 10.8, 10.6, 10.4, 11.0, 10.9, 10.7, 10.8, 10.5, 10.6, 10.9,
-       10.4, 10.2, 10.8, 10.7, 10.5, 10.6
-     ]
-   }
-   ```
-
-   ### **Respuesta**
-
-   | Campo                   | Tipo          | Descripción                                          |
-   | ----------------------- | ------------- | ---------------------------------------------------- |
-   | `Area_Panel_m2`         | `float`       | Área óptima de panel solar (m²)                      |
-   | `Capacidad_Bateria_kWh` | `float`       | Capacidad óptima de batería (kWh)                    |
-   | `Estado_Carga_kWh`      | `list[float]` | Lista del estado de carga diario de la batería (kWh) |
-
-   ### **Ejemplo de Respuesta**
-
-   ```json
-   {
-     "status": "success",
-     "results": {
-       "Area_Panel_m2": 15.5,
-       "Capacidad_Bateria_kWh": 12.3,
-       "Estado_Carga_kWh": [3.2, 6.8, 7.0]
-     }
-   }
-   ```
-
----
-
-## ⚠️ **Manejo de Errores**
-
-- **400 Bad Request:**
-
-  - Datos faltantes o inválidos en la solicitud.
-  - Ejemplo de respuesta:
-    ```json
-    {
-      "status": "error",
-      "message": "El valor de 'K' debe ser un entero positivo."
-    }
-    ```
-
-- **500 Internal Server Error:**
-  - Error inesperado durante la ejecución del modelo.
-  - Ejemplo de respuesta:
-    ```json
-    {
-      "status": "error",
-      "message": "Ocurrió un error inesperado. Por favor, intenta nuevamente."
-    }
-    ```
-
----
-
-## 🧪 **Pruebas**
-
-1. **Herramientas sugeridas:**
-
-   - [Postman](https://www.postman.com/) o [cURL](https://curl.se/) para probar manualmente.
-   - `pytest` para pruebas unitarias.
-
-2. **Ejemplo con cURL**:
-
-   ```bash
-   curl -X POST http://localhost:5000/optimize/ \
-   -H "Content-Type: application/json" \
-   -d '{
-       "K": 30,
-       "c1": 100,
-       "c2": 500,
-       "c3": 0.05,
-       "c4": 0.25,
-       "gamma": 0.90,
-       "r": 0.2,
-       "X_max": 20,
-       "generacion_solar": [4.5, 5.0, 4.8],
-       "consumo_energia": [6.0, 6.5, 7.0]
-   }'
-   ```
-
-3. **Salida esperada**:
-   ```json
-   {
-     "status": "success",
-     "results": {
-       "Area_Panel_m2": 15.5,
-       "Capacidad_Bateria_kWh": 12.3,
-       "Estado_Carga_kWh": [3.2, 6.8, 7.0]
-     }
-   }
-   ```
-
----
-
-## 🖋 **Contribuciones**
-
-1. Haz un fork del repositorio.
-2. Crea una rama: `git checkout -b feature-nueva-funcionalidad`.
-3. Realiza commits: `git commit -m 'Añadida nueva funcionalidad'`.
-4. Envía un pull request.
-
----
-
-# **Modulo 2 Optimización Solar API**
-
-## 🌟 **Descripción**
-
-Esta API permite calcular y optimizar la energía generada por un panel solar mediante un modelo matemático implementado con `numpy` y `scipy`. Calcula:
-
-- Inclinación óptima del panel solar (θ) por hora.
-- Orientación óptima del panel solar (φ) por hora.
-- Energía generada hora a hora.
-- Energía total generada durante el día.
-
-Ideal para simulaciones y análisis de sistemas fotovoltaicos.
-
----
-
-## 🚀 **Uso**
-
-1. **Ejecutar la aplicación**:
-
-   ```bash
-   python main.py
-   ```
-
-2. **Probar la API**:
-   La API estará disponible en `http://localhost:5000`.
-
-3. **Endpoint principal**:
-
-   **POST** `/api/v1/solar/`
-
-   ### **Parámetros de Entrada**
-
-   Enviar un JSON con los siguientes campos:
-   | Campo | Tipo | Descripción |
-   |----------------|-----------|-----------------------------------------------------------|
-   | `A` | `float` | Área del panel solar (m²) |
-   | `eta` | `float` | Eficiencia del panel solar (en porcentaje, e.g., `0.20`) |
-   | `I_promedio` | `float` | Radiación solar promedio diaria (kWh/m²) |
-   | `horas_sol` | `int` | Duración del día (en horas) |
-
-   ### **Ejemplo de Entrada**
-
-   ```json
-   {
-     "A": 10,
-     "eta": 0.2,
-     "I_promedio": 5.5,
-     "horas_sol": 12
-   }
-   ```
-
-   ### **Respuesta**
-
-   | Campo              | Tipo    | Descripción                                 |
-   | ------------------ | ------- | ------------------------------------------- |
-   | `Hora`             | `int`   | Hora del día                                |
-   | `Radiación Solar`  | `float` | Radiación solar en esa hora (kWh/m²)        |
-   | `Inclinación (θ)`  | `float` | Inclinación óptima del panel solar (°)      |
-   | `Orientación (φ)`  | `float` | Orientación óptima del panel solar (°)      |
-   | `Energía Generada` | `float` | Energía generada por hora (kWh)             |
-   | `total_energy`     | `float` | Energía total generada durante el día (kWh) |
-
-   ### **Ejemplo de Respuesta**
-
-   ```json
-   {
-     "status": "success",
-     "results": [
-       {
-         "Hora": 6,
-         "Radiación Solar (kWh/m²)": 5.1,
-         "Inclinación (θ)": 28.34,
-         "Orientación (φ)": -10.23,
-         "Energía Generada (kWh)": 8.23
-       },
-       {
-         "Hora": 7,
-         "Radiación Solar (kWh/m²)": 6.0,
-         "Inclinación (θ)": 32.12,
-         "Orientación (φ)": -5.1,
-         "Energía Generada (kWh)": 9.41
-       }
-       // Más registros por cada hora del día...
-     ],
-     "total_energy": 85.3
-   }
-   ```
-
----
-
-## ⚠️ **Manejo de Errores**
-
-- **400 Bad Request**:
-
-  - Datos faltantes o inválidos en la solicitud.
-  - Ejemplo de respuesta:
-    ```json
-    {
-      "status": "error",
-      "message": "Faltan claves requeridas: {'A', 'eta'}"
-    }
-    ```
-
-- **500 Internal Server Error**:
-  - Error inesperado durante la ejecución del modelo.
-  - Ejemplo de respuesta:
-    ```json
-    {
-      "status": "error",
-      "message": "Ocurrió un error inesperado. Por favor, intenta nuevamente."
-    }
-    ```
-
----
-
-## 🧪 **Pruebas**
-
-1. **Herramientas sugeridas**:
-
-   - [Postman](https://www.postman.com/) o [cURL](https://curl.se/) para probar manualmente.
-   - `pytest` para pruebas unitarias.
-
-2. **Ejemplo con cURL**:
-
-   ```bash
-   curl -X POST http://localhost:5000/api/v1/solar/ \
-   -H "Content-Type: application/json" \
-   -d '{
-       "A": 10,
-       "eta": 0.20,
-       "I_promedio": 5.5,
-       "horas_sol": 12
-   }'
-   ```
-
-3. **Salida esperada**:
-   ```json
-   {
-     "status": "success",
-     "results": [
-       {
-         "Hora": 6,
-         "Radiación Solar (kWh/m²)": 5.1,
-         "Inclinación (θ)": 28.34,
-         "Orientación (φ)": -10.23,
-         "Energía Generada (kWh)": 8.23
-       }
-     ],
-     "total_energy": 85.3
-   }
-   ```
-
----
-
-## 🖋 **Contribuciones**
-
-1. Haz un fork del repositorio.
-2. Crea una rama: `git checkout -b feature-nueva-funcionalidad`.
-3. Realiza commits: `git commit -m 'Añadida nueva funcionalidad'`.
-4. Envía un pull request.
-
----
-
-## 📜 **Licencia**
-
-Este proyecto está licenciado bajo la [MIT License](LICENSE).
-
-```
-
-Este README proporciona una guía completa para la instalación, uso y pruebas de la API de optimización solar. Si necesitas ajustes, ¡avísame! 😊
-```
